@@ -2,8 +2,8 @@ class TicTacToe
   attr_reader :board, :player_one, :player_two
 
   def initialize(player_one:, player_two:)
-    @player_one = player_one
-    @player_two = player_two
+    @player_one = { name: player_one, marker: "🍔" }
+    @player_two = { name: player_one, marker: "☃"  }
 
     @board = [
       %w(- - -),
@@ -17,22 +17,26 @@ class TicTacToe
     print_board
 
     while true do
-      puts "Where would you like to move, #{player_one}? You are X (choose 1-9)"
-      print "> "
-      move_index = gets.chomp.to_i - 1
-      board[move_index / 3][move_index % 3] = "X"
+      player_turn(player: player_one)
 
       print_board
-      puts "Where would you like to move, #{player_two}? You are O (choose 1-9)"
-      print "> "
-      move_index = gets.chomp.to_i - 1
-      board[move_index / 3][move_index % 3] = "O"
+
+      player_turn(player: player_two)
 
       print_board
     end
   end
 
+  def player_turn(player:)
+    puts "Where would you like to move, #{player[:name]}? You are #{player[:marker]} (choose 1-9):"
+    update_board(board_index: STDIN.gets.chomp.to_i - 1, marker: player[:marker])
+  end
+
+  def update_board(board_index:, marker:)
+    board[board_index / 3][board_index % 3] = marker
+  end
+
   def print_board
-    board.each { |row| print row.join(" | "); print "\n" }
+    board.each { |row| puts row.join(" | ") }
   end
 end
