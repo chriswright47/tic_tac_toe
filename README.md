@@ -10,11 +10,14 @@ To get started, from command line:
 1. To play the game: `ruby run.rb`
 
 
-For Ruby learning time:
+## For Ruby learning time:
 Week One: 2017-05-24
  - Get a simple command line game set up
- 
-Further work ideas:
+Week Two: 2017-05-31
+ - Get the game to finish when tic-tac-toe is achieved
+
+
+## Further work ideas:
  - More robust input validation and/or error handling
  - Artificial Intelligence for a computer player (this itself could be several iterations. e.g. iteration 1: random moves, iteration 2: smarter moves, iteration 3: optimal move)
  - Web UI instead of command line? Use JS framework?
