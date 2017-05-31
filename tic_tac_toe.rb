@@ -1,30 +1,42 @@
+require_relative "board.rb"
+
 class TicTacToe
   attr_reader :board, :player_one, :player_two
 
   def initialize(player_one:, player_two:)
     @player_one = { name: player_one, marker: "🍔" }
-    @player_two = { name: player_one, marker: "☃"  }
+    @player_two = { name: player_two, marker: "☃"  }
 
-    @board = [
-      %w(- - -),
-      %w(- - -),
-      %w(- - -),
-    ]
+    @board = Board.new
   end
 
   def run
     puts "Starting a new game"
-    print_board
+    puts board
+
+    # until board.game_over? do
+    #   # switch back and forth between player one and two
+
+    # end
 
     while true do
       player_turn(player: player_one)
-
-      print_board
+      break if board.game_over?
+      puts board
 
       player_turn(player: player_two)
-
-      print_board
+      break if board.game_over?
+      puts board
     end
+
+    puts "------------------------------"
+    if board.game_result == :catz_game
+      puts "Catz Game. No one wins. Thanks for Playing!"
+    else
+      puts "Game Over: Thanks for Playing!"
+    end
+    puts "------------------------------"
+    puts board
   end
 
   def player_turn(player:)
@@ -33,10 +45,6 @@ class TicTacToe
   end
 
   def update_board(board_index:, marker:)
-    board[board_index / 3][board_index % 3] = marker
-  end
-
-  def print_board
-    board.each { |row| puts row.join(" | ") }
+    board.mark_square(board_index: board_index, marker: marker)
   end
 end

@@ -14,6 +14,34 @@ RSpec.describe TicTacToe do
     # TODO:...
   end
 
+  describe "#run" do
+    before { allow(STDOUT).to receive(:puts) }
+
+    context "when player one wins in three turns" do
+      before do
+        allow(STDIN).to receive(:gets).and_return("1","6","2","5","3")
+      end
+
+      it "prints game over after a player wins" do
+        expect(STDOUT).to receive(:puts).with("Game Over: Thanks for Playing!")
+        subject.run
+      end
+    end
+
+    context "when neither player wins after nine turns" do
+      before do
+        allow(STDIN).to receive(:gets).
+          exactly(9).times.
+          and_return("1","2","3","5","4","7","6","9","8")
+      end
+
+      it "prints 'Tie Game' after catz game" do
+        expect(STDOUT).to receive(:puts).with("Catz Game. No one wins. Thanks for Playing!")
+        subject.run
+      end
+    end
+  end
+
   describe "player_turn" do
     before do
       allow(STDIN).to receive(:gets).and_return("2")
@@ -23,7 +51,7 @@ RSpec.describe TicTacToe do
     context "when player_one" do
       it "prompts a message asking for a move" do
         expect(STDOUT).to receive(:puts).
-          with("Where would you like to move, #{subject.player_one[:name]}? You are #{subject.player_one[:marker]} (choose 1-9):")
+          with("Where would you like to move, #{player_one}? You are #{subject.player_one[:marker]} (choose 1-9):")
 
         subject.player_turn(player: subject.player_one)
       end
@@ -39,7 +67,7 @@ RSpec.describe TicTacToe do
     context "when player_two" do
       it "prompts a message asking for a move" do
         expect(STDOUT).to receive(:puts).
-          with("Where would you like to move, #{subject.player_two[:name]}? You are #{subject.player_two[:marker]} (choose 1-9):")
+          with("Where would you like to move, #{player_two}? You are #{subject.player_two[:marker]} (choose 1-9):")
 
         subject.player_turn(player: subject.player_two)
       end
