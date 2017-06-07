@@ -4,8 +4,8 @@ class TicTacToe
   attr_reader :board, :player_one, :player_two
 
   def initialize(player_one:, player_two:)
-    @player_one = { name: player_one, marker: "🍔" }
-    @player_two = { name: player_two, marker: "☃"  }
+    @player_one = Player.new(name: player_one, marker: "🍔")
+    @player_two = Player.new(name: player_two, marker: "☃")
 
     @board = Board.new
   end
@@ -14,37 +14,56 @@ class TicTacToe
     puts "Starting a new game"
     puts board
 
-    # until board.game_over? do
-    #   # switch back and forth between player one and two
+    play_game
 
-    # end
-
-    while true do
-      player_turn(player: player_one)
-      break if board.game_over?
-      puts board
-
-      player_turn(player: player_two)
-      break if board.game_over?
-      puts board
-    end
-
-    puts "------------------------------"
-    if board.game_result == :catz_game
-      puts "Catz Game. No one wins. Thanks for Playing!"
-    else
-      puts "Game Over: Thanks for Playing!"
-    end
-    puts "------------------------------"
-    puts board
+    end_game
   end
 
-  def player_turn(player:)
-    puts "Where would you like to move, #{player[:name]}? You are #{player[:marker]} (choose 1-9):"
-    update_board(board_index: STDIN.gets.chomp.to_i - 1, marker: player[:marker])
+  def play_game
+    9.times do |i|
+      puts board
+
+      player = i.even? ? player_one : player_two
+      update_board(board_index: player.get_move, marker: player.marker)
+      return player if board.player_has_won?
+    end
+
+    :catz_game
   end
 
   def update_board(board_index:, marker:)
     board.mark_square(board_index: board_index, marker: marker)
+  end
+
+  def end_game
+    puts "------------------------------"
+
+    if board.game_result == :catz_game
+      puts "Catz Game. No one wins. Thanks for Playing!"
+    else
+      puts "#{@winner} wins! Thanks for Playing!"
+    end
+
+    puts "------------------------------"
+    puts board
+  end
+end
+
+class Player
+  attr_reader :name, :marker
+
+  def initialize(name:, marker:)
+    @name   = name
+    @marker = marker
+  end
+
+  def to_s
+    name
+  end
+
+  def get_move
+    puts "Where would you like to move, #{name}? You are #{marker} (choose board space 1-9):"
+
+    STDIN.gets.chomp.to_i - 1
   end
 end
