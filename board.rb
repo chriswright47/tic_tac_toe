@@ -1,9 +1,9 @@
 class Board
   attr_reader :empty_marker, :squares
 
-  def initialize(empty_marker: "-")
+  def initialize(empty_marker: "-", squares: Array.new(3) { Array.new(3) { empty_marker } })
     @empty_marker = empty_marker
-    @squares      = Array.new(3) { Array.new(3) { empty_marker } }
+    @squares      = squares
     # [
     #   ["-","-","-"],
     #   ["-","-","-"],
@@ -15,7 +15,17 @@ class Board
     squares.each { |row| puts row.join(" | ") }
   end
 
+  def empty_square_indexes
+    # index of all squares that have empty marker
+    squares.
+      flatten.
+      map.with_index {|s, index| index + 1 if s == "-" }.
+      compact
+  end
+
   def mark_square(board_index:, marker:)
+
+    # Board.new(squares: squares)
     squares[board_index / 3][board_index % 3] = marker
   end
 
